@@ -1,0 +1,52 @@
+{
+  "name": "vited",
+  "version": "0.1.0",
+  "description": "Cli Tools for vite dev",
+  "bin": {
+    "vited": "./bin/vited.js"
+  },
+  "scripts": {
+    "build": "father build --cjs"
+  },
+  "tags": [
+    "vited",
+    "vited-cli"
+  ],
+  "keywords": [
+    "vite dev",
+    "tools"
+  ],
+  "author": "leonwgc",
+  "license": "MIT",
+  "peerDependencies": {
+    "@vitejs/plugin-react-refresh": "^1.3.3",
+    "vite": "^2.3.0",
+    "vite-plugin-style-import": "^0.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-react": "^7.8.3",
+    "@babel/preset-stage-0": "^7.8.3",
+    "chalk": "^2.4.2",
+    "commander": "^7.2.0",
+    "ejs": "^3.1.6",
+    "execa": "^5.0.0",
+    "father": "^2.30.4",
+    "glob": "^7.1.7",
+    "import-local": "^3.0.2",
+    "mkdirp": "^0.5.1",
+    "yargs": "^17.0.1"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "lib",
+    "vite.config.ejs",
+    "index.ejs"
+  ]
+}
