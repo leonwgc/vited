@@ -6,4 +6,4 @@ if (importLocal(__filename)) {
   return;
 }
 
-require('../dist');
+require('../src');

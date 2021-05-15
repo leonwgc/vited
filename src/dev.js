@@ -8,13 +8,14 @@ const execa = require('execa');
 const glob = require('glob');
 
 module.exports = (cfg, build = false) => {
-  const s = glob.sync(`./**?(src/)/${cfg}/index{.jsx,.js,.ts,.tsx}`);
+  let s = glob.sync(`./src/${cfg}/index{.jsx,.js,.ts,.tsx}`);
   if (!s.length) {
-    exit(`not exist: ./src/${cfg}/index.{jsx,js,tsx,ts}`);
+    s = glob.sync(`./src/${cfg}{.jsx,.js,.ts,.tsx}`);
+    if (!s.length) {
+      exit(`can't find entry file`);
+    }
   }
-  console.log(s);
-  exit('done');
-  const entry = s[0] || './src/index';
+  const entry = s[0];
   const distFile = `index.html`;
   let srcEjs;
 

@@ -17,12 +17,14 @@ var glob = require('glob');
 
 module.exports = function (cfg) {
   var build = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var s = glob.sync("./src/**/".concat(cfg, "/index{.jsx,.js,.ts,.tsx}"));
+  var s = glob.sync("./**?(src/)/".concat(cfg, "/index{.jsx,.js,.ts,.tsx}"));
 
   if (!s.length) {
     exit("not exist: ./src/".concat(cfg, "/index.{jsx,js,tsx,ts}"));
   }
 
+  console.log(s);
+  exit('done');
   var entry = s[0] || './src/index';
   var distFile = "index.html";
   var srcEjs;

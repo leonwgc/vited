@@ -1,20 +1,23 @@
-### vited用法
- 
+### vited 用法
+
 ```js
-  -c, --config <dir>  包含入口文件index.jsx/tsx的目录名
+  -c, --config <dir>  src目录下包含入口文件index.jsx/tsx的目录名 / src下的入口文件名(不包含扩展名)
   -b, --build         打包编译到dist
 ```
 
 ##### 开发
 
 ```js
-vited -c src
-```
-##### 打包
-```js
-vited -bc src
+vited -c dir
+vited -c fileName
 ```
 
+##### 打包
+
+```js
+vited -bc dir
+vited -bc fileName
+```
 
 项目根目录自定义 html 模板 index.ejs (可选),下列是默认模板
 
