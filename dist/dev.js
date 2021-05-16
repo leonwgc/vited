@@ -15,31 +15,27 @@ var execa = require('execa');
 
 var glob = require('glob');
 
-module.exports = function (cfg) {
+module.exports = function (entry) {
   var build = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var publicPath = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
-  var s = glob.sync("./src/".concat(cfg, "/index{.jsx,.js,.ts,.tsx}"));
+  var s = glob.sync("./src/".concat(entry, "/index{.jsx,.js,.ts,.tsx}"));
 
   if (!s.length) {
-    s = glob.sync("./src/".concat(cfg, "{.jsx,.js,.ts,.tsx}"));
+    s = glob.sync("./src/".concat(entry, "{.jsx,.js,.ts,.tsx}"));
 
     if (!s.length) {
       exit("can't find entry file");
     }
   }
 
-  var entry = s[0];
-  var distFile = "".concat(build ? cfg : 'index', ".html");
+  var entryFile = s[0];
+  var distFile = "".concat(build ? entry : 'index', ".html");
   var srcEjs;
 
   if (fs.existsSync(getProjectPath('./index.ejs'))) {
     srcEjs = getProjectPath('./index.ejs');
   } else {
     srcEjs = getToolPath('../index.ejs');
-  }
-
-  if (typeof cfg !== 'string') {
-    exit('please set cfg');
   }
 
   var viteConfigTpl = getToolPath('../vite.config.ejs');
@@ -59,7 +55,7 @@ module.exports = function (cfg) {
 
   cleanup();
   ejs.renderFile(viteConfigTpl, {
-    cfg: cfg,
+    entry: entry,
     publicPath: publicPath
   }, function (err, body) {
     if (err) throw err;
@@ -70,7 +66,7 @@ module.exports = function (cfg) {
 
     fs.writeFileSync(destConfig, body);
     ejs.renderFile(srcEjs, {
-      entry: entry
+      entry: entryFile
     }, function (err, body) {
       if (err) {
         throw err;
@@ -80,7 +76,7 @@ module.exports = function (cfg) {
         }
 
         fs.writeFileSync(distFile, body);
-        console.log(chalk.green("".concat(build ? '打包' : '开发', ":").concat(cfg)));
+        console.log(chalk.green("".concat(build ? '打包' : '开发', ":").concat(entry)));
         var sp = execa('vite', ["".concat(build ? 'build' : 'serve')]);
         var stdout = sp.stdout,
             stderr = sp.stderr;

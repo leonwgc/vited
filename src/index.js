@@ -1,22 +1,23 @@
 const { Command } = require('commander');
 const start = require('./dev');
 const program = new Command();
+const pkg = require('../package.json');
 
-// config dir name under src  or entry filename(no ext) under src
-
-program.version('0.0.1');
 program
-  .option('-c, --config <dir>', '包含入口文件index.jsx/tsx的目录名')
+  .option('-e, --entry <dir>', 'src目录下的入口目录/文件')
   .option('-b, --build', '打包编译到dist')
-  .option('-p, --public-path <path>', 'publicPath设置', '/');
+  .option('-p, --public-path <path>', '设置publicPath, 默认 /', '/')
+  .helpOption('-h, --help', '帮助信息')
+  .version(pkg.version, '-v, --version', '版本信息');
 
 program.parse(process.argv);
 
 const args = program.opts();
 
-if (typeof args.config === 'string') {
-  const { config, build, publicPath } = args;
-  start(config, build, publicPath);
+const { entry, build, publicPath } = args;
+
+if (entry) {
+  start(entry, build, publicPath);
 } else {
   program.help();
 }

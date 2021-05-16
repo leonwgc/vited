@@ -70,7 +70,7 @@ export default ({ command, mode }) => {
       assetsInlineLimit: 10240,
       rollupOptions: {
         input: {
-          index: path.resolve(__dirname, '<%=cfg%>.html'),
+          index: path.resolve(__dirname, '<%=entry%>.html'),
         },
       },
     };

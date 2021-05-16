@@ -7,16 +7,16 @@ const chalk = require('chalk');
 const execa = require('execa');
 const glob = require('glob');
 
-module.exports = (cfg, build = false, publicPath = '/') => {
-  let s = glob.sync(`./src/${cfg}/index{.jsx,.js,.ts,.tsx}`);
+module.exports = (entry, build = false, publicPath = '/') => {
+  let s = glob.sync(`./src/${entry}/index{.jsx,.js,.ts,.tsx}`);
   if (!s.length) {
-    s = glob.sync(`./src/${cfg}{.jsx,.js,.ts,.tsx}`);
+    s = glob.sync(`./src/${entry}{.jsx,.js,.ts,.tsx}`);
     if (!s.length) {
       exit(`can't find entry file`);
     }
   }
-  const entry = s[0];
-  let distFile = `${build ? cfg : 'index'}.html`;
+  const entryFile = s[0];
+  let distFile = `${build ? entry : 'index'}.html`;
 
   let srcEjs;
 
@@ -24,10 +24,6 @@ module.exports = (cfg, build = false, publicPath = '/') => {
     srcEjs = getProjectPath('./index.ejs');
   } else {
     srcEjs = getToolPath('../index.ejs');
-  }
-
-  if (typeof cfg !== 'string') {
-    exit('please set cfg');
   }
 
   const viteConfigTpl = getToolPath('../vite.config.ejs');
@@ -47,7 +43,7 @@ module.exports = (cfg, build = false, publicPath = '/') => {
 
   cleanup();
 
-  ejs.renderFile(viteConfigTpl, { cfg, publicPath }, (err, body) => {
+  ejs.renderFile(viteConfigTpl, { entry, publicPath }, (err, body) => {
     if (err) throw err;
     if (fs.existsSync(destConfig)) {
       fs.unlinkSync(destConfig);
@@ -56,7 +52,7 @@ module.exports = (cfg, build = false, publicPath = '/') => {
     ejs.renderFile(
       srcEjs,
       {
-        entry,
+        entry: entryFile,
       },
       (err, body) => {
         if (err) {
@@ -67,7 +63,7 @@ module.exports = (cfg, build = false, publicPath = '/') => {
           }
           fs.writeFileSync(distFile, body);
 
-          console.log(chalk.green(`${build ? '打包' : '开发'}:${cfg}`));
+          console.log(chalk.green(`${build ? '打包' : '开发'}:${entry}`));
 
           const sp = execa('vite', [`${build ? 'build' : 'serve'}`]);
 
