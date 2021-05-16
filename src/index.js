@@ -7,15 +7,16 @@ const program = new Command();
 program.version('0.0.1');
 program
   .option('-c, --config <dir>', '包含入口文件index.jsx/tsx的目录名')
-  .option('-b, --build', '打包编译到dist');
+  .option('-b, --build', '打包编译到dist')
+  .option('-p, --public-path <path>', 'publicPath设置', '/');
 
 program.parse(process.argv);
 
-const options = program.opts();
+const args = program.opts();
 
-if (typeof options.config === 'string') {
-  const { config, build } = options;
-  start(config, build);
+if (typeof args.config === 'string') {
+  const { config, build, publicPath } = args;
+  start(config, build, publicPath);
 } else {
   program.help();
 }

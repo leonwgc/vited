@@ -56,14 +56,13 @@ export default ({ command, mode }) => {
   };
 
   if (command === 'serve') {
-    config.base = '/'; 
     config.plugins.unshift(reactRefresh());
     config.server = {
       port: pkg.port || 9004,
       host:'0.0.0.0'
     };
   } else {
-    config.base = '/'; // publicPath
+    config.base = '<%=publicPath%>'; // publicPath
     config.build = {
       outDir: `dist`,
       assetsDir: '',

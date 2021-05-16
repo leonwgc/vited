@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const execa = require('execa');
 const glob = require('glob');
 
-module.exports = (cfg, build = false) => {
+module.exports = (cfg, build = false, publicPath = '/') => {
   let s = glob.sync(`./src/${cfg}/index{.jsx,.js,.ts,.tsx}`);
   if (!s.length) {
     s = glob.sync(`./src/${cfg}{.jsx,.js,.ts,.tsx}`);
@@ -16,7 +16,8 @@ module.exports = (cfg, build = false) => {
     }
   }
   const entry = s[0];
-  const distFile = `index.html`;
+  let distFile = `${build ? cfg : 'index'}.html`;
+
   let srcEjs;
 
   if (fs.existsSync(getProjectPath('./index.ejs'))) {
@@ -32,7 +33,21 @@ module.exports = (cfg, build = false) => {
   const viteConfigTpl = getToolPath('../vite.config.ejs');
   const destConfig = getProjectPath('./vite.config.js');
 
-  ejs.renderFile(viteConfigTpl, { cfg }, (err, body) => {
+  const cleanup = () => {
+    try {
+      if (fs.existsSync(destConfig)) {
+        fs.unlinkSync(destConfig);
+      }
+      if (fs.existsSync(distFile)) {
+        fs.unlinkSync(distFile);
+      }
+    } finally {
+    }
+  };
+
+  cleanup();
+
+  ejs.renderFile(viteConfigTpl, { cfg, publicPath }, (err, body) => {
     if (err) throw err;
     if (fs.existsSync(destConfig)) {
       fs.unlinkSync(destConfig);
@@ -54,9 +69,9 @@ module.exports = (cfg, build = false) => {
 
           console.log(chalk.green(`${build ? '打包' : '开发'}:${cfg}`));
 
-          const { stdout, stderr } = execa('vite', [
-            `${build ? 'build' : 'serve'}`,
-          ]);
+          const sp = execa('vite', [`${build ? 'build' : 'serve'}`]);
+
+          const { stdout, stderr } = sp;
 
           stdout.on('data', (data) => {
             console.log(chalk.green(Buffer.from(data, 'utf-8')));
@@ -64,6 +79,11 @@ module.exports = (cfg, build = false) => {
 
           stderr.on('data', (data) => {
             console.log(chalk.red(Buffer.from(data, 'utf-8')));
+          });
+
+          sp.on('exit', () => {
+            cleanup();
+            console.log(chalk.green('done 🍺'));
           });
         }
       },

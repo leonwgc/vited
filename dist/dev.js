@@ -17,6 +17,7 @@ var glob = require('glob');
 
 module.exports = function (cfg) {
   var build = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var publicPath = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
   var s = glob.sync("./src/".concat(cfg, "/index{.jsx,.js,.ts,.tsx}"));
 
   if (!s.length) {
@@ -28,7 +29,7 @@ module.exports = function (cfg) {
   }
 
   var entry = s[0];
-  var distFile = "index.html";
+  var distFile = "".concat(build ? cfg : 'index', ".html");
   var srcEjs;
 
   if (fs.existsSync(getProjectPath('./index.ejs'))) {
@@ -43,8 +44,23 @@ module.exports = function (cfg) {
 
   var viteConfigTpl = getToolPath('../vite.config.ejs');
   var destConfig = getProjectPath('./vite.config.js');
+
+  var cleanup = function cleanup() {
+    try {
+      if (fs.existsSync(destConfig)) {
+        fs.unlinkSync(destConfig);
+      }
+
+      if (fs.existsSync(distFile)) {
+        fs.unlinkSync(distFile);
+      }
+    } finally {}
+  };
+
+  cleanup();
   ejs.renderFile(viteConfigTpl, {
-    cfg: cfg
+    cfg: cfg,
+    publicPath: publicPath
   }, function (err, body) {
     if (err) throw err;
 
@@ -65,16 +81,18 @@ module.exports = function (cfg) {
 
         fs.writeFileSync(distFile, body);
         console.log(chalk.green("".concat(build ? '打包' : '开发', ":").concat(cfg)));
-
-        var _execa = execa('vite', ["".concat(build ? 'build' : 'serve')]),
-            stdout = _execa.stdout,
-            stderr = _execa.stderr;
-
+        var sp = execa('vite', ["".concat(build ? 'build' : 'serve')]);
+        var stdout = sp.stdout,
+            stderr = sp.stderr;
         stdout.on('data', function (data) {
           console.log(chalk.green(Buffer.from(data, 'utf-8')));
         });
         stderr.on('data', function (data) {
           console.log(chalk.red(Buffer.from(data, 'utf-8')));
+        });
+        sp.on('exit', function () {
+          cleanup();
+          console.log(chalk.green('done 🍺'));
         });
       }
     });
