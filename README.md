@@ -16,13 +16,42 @@
     $ yarn add -D vited
 
 
+#### 开发模式  vited start page (page是目录)
+
 ```js
-  -e, --entry <dir>  src目录下的入口目录/文件(不带扩展名)
-  -b, --build         打包编译到dist目录
-  -p --public-path    设置publicPath, 默认 /
+ page 是src目录下的入口目录,必须包含index.jsx/tsx入口
+ 
+ 目录结构
+ /src
+    /page/index.jsx
 ```
 
-#### 安装vite依赖
+#### 开发模式  vited start file
+
+```js
+file 是src目录下的文件(不带扩展名)
+ 
+目录结构
+ /src
+    /file.jsx
+    
+vited start file 
+ 
+目录结构
+ /src
+    /index.tsx
+    
+vited start index
+```
+
+
+##### 编译输出 vited build dir/file [-p publicPath]
+
+```js
+vited build dir/file -p https://www.xxx.com/ , 不设置publicPath, 则默认为 /
+```
+
+#### vited包含安装的vite依赖
 
 ```js
   "devDependencies": {
@@ -33,15 +62,8 @@
 ```
 
 
-##### 开发
-
-```js
-vited -e dir/file
-```
-
 #### 设置开发端口
 给package.json添加port属性 , 默认端口9004
-
 
 ```js
 {
@@ -53,16 +75,7 @@ vited -e dir/file
 
 ```
 
-##### 打包
-
-```js
-vited -be dir/file
-
-// 设置publicPath
-vited -be dir/file -p https://www.xxx.com/
-```
-
-项目根目录自定义 html 模板 index.ejs (可选),下列是默认模板 ,<%=entry%> 是入口路径
+##### 项目根目录自定义 html 模板 index.ejs (可选),下列是默认模板 ,<%=entry%> 是入口路径
 
 ```js
 <!DOCTYPE html>
