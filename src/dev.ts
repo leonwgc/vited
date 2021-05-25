@@ -99,7 +99,7 @@ export const run = (
     config.base = publicPath;
     config.build = {
       outDir: `dist`,
-      assetsDir: '',
+      assetsDir: 'assets',
       emptyOutDir: true,
       assetsInlineLimit: 10240,
       rollupOptions: {
@@ -127,7 +127,7 @@ export const run = (
         configFile: false,
         root: process.cwd(),
         envFile: false,
-        mode: 'production',
+        mode: 'development',
         ...config,
       });
     })();
