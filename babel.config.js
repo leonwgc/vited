@@ -1,20 +1,12 @@
-module.exports = (api) => {
-  api.cache.using(() => process.env.NODE_ENV);
-
-  const rt = {
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          modules: false,
-        },
-      ],
-    ],
-    plugins: [
-      ['@babel/plugin-proposal-decorators', { legacy: true }],
-      ['@babel/plugin-proposal-class-properties', { loose: false }],
-    ].filter(Boolean),
-  };
-
-  return rt;
+module.exports = {
+  presets: [
+    require.resolve('@babel/preset-env', {
+      targets: {
+        node: '10',
+      },
+    }),
+    ['@babel/preset-react'],
+    require.resolve('@babel/preset-typescript'),
+  ],
+  plugins: [[require.resolve('@babel/plugin-transform-runtime')]],
 };
