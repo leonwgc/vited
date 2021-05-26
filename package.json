@@ -1,6 +1,6 @@
 {
   "name": "vited",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Cli Tools for vite dev for mpa/spa app",
   "bin": {
     "vited": "./bin/vited.js"

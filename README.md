@@ -99,3 +99,6 @@ vited build dir/file -p https://www.xxx.com/ , 不设置publicPath, 则默认为
 
 
 ```
+
+### demo 
+参考 [https://github.com/leonwgc/vited-demo](https://github.com/leonwgc/vited-demo)
