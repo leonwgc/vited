@@ -1,6 +1,6 @@
 {
   "name": "vited",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Cli Tools for vite dev for mpa/spa app",
   "bin": {
     "vited": "./bin/vited.js"
@@ -52,9 +52,7 @@
     "typescript": "^4.2.4"
   },
   "files": [
-    "dist",
     "bin",
-    "vite.config.ejs",
-    "index.ejs"
+    "lib"
   ]
 }
