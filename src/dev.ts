@@ -138,7 +138,6 @@ export const run = (
         configFile: false,
         root: process.cwd(),
         envFile: false,
-        mode: 'development',
         ...config,
       });
     })();
