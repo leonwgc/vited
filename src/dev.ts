@@ -110,15 +110,8 @@ export const run = (
   } else {
     config.base = publicPath;
     config.build = {
-      outDir: getProjectPath('dist'),
-      assetsDir: getProjectPath('assets'),
       emptyOutDir: true,
       assetsInlineLimit: 10240,
-      rollupOptions: {
-        input: {
-          index: getProjectPath('./index.html'),
-        },
-      },
     };
   }
 
