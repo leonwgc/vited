@@ -33,9 +33,9 @@ file 是src目录下的文件(不带扩展名)
  
 目录结构
  /src
-    /file.jsx
+    /index.jsx
     
-vited start file 
+vited start 
  
 目录结构
  /src

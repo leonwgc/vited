@@ -4,7 +4,7 @@ import fs from 'fs';
 import process from 'process';
 import chalk from 'chalk';
 import glob from 'glob';
-import { createServer, UserConfig, build } from 'vite';
+import { createServer, UserConfig, build, normalizePath } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import styleImport from 'vite-plugin-style-import';
 import getTpl from './tpl';
@@ -12,7 +12,7 @@ import cheerio from 'cheerio';
 
 //#region  helper
 const getProjectPath = (dir = './') => {
-  return path.join(process.cwd(), dir);
+  return normalizePath(path.join(process.cwd(), dir));
 };
 
 function exit(error) {
@@ -33,17 +33,18 @@ export const run = (
   if (!s.length) {
     s = glob.sync(`./src/index{.jsx,.js,.ts,.tsx}`);
     if (!s.length) {
-      exit(`can't find entry file`);
+      exit(`No entry file found : ${getProjectPath('./src/index')}`);
     }
   }
 
+  const entry = s[0];
   const indexHtml = getProjectPath('./index.html');
   if (!fs.existsSync(indexHtml)) {
-    fs.writeFileSync(indexHtml, getTpl(s[0]));
+    fs.writeFileSync(indexHtml, getTpl(entry));
   } else {
     const content = fs.readFileSync(indexHtml, { encoding: 'utf-8' });
     let $ = cheerio.load(content);
-    $('script[type="module"]').attr('src', s[0]);
+    $('script[type="module"]').attr('src', entry);
     fs.writeFileSync(indexHtml, $.html());
   }
 
@@ -93,8 +94,8 @@ export const run = (
     ],
     resolve: {
       alias: {
-        '~': path.resolve(__dirname, './src'),
-        '@': path.resolve(__dirname, './src'),
+        '~': getProjectPath('./src'),
+        '@': getProjectPath('./src'),
       },
     },
     logLevel: 'info',
@@ -109,8 +110,8 @@ export const run = (
   } else {
     config.base = publicPath;
     config.build = {
-      outDir: `dist`,
-      assetsDir: 'assets',
+      outDir: getProjectPath('dist'),
+      assetsDir: getProjectPath('assets'),
       emptyOutDir: true,
       assetsInlineLimit: 10240,
       rollupOptions: {
@@ -137,6 +138,7 @@ export const run = (
       await build({
         configFile: false,
         root: process.cwd(),
+        base: publicPath,
         envFile: false,
         ...config,
       });

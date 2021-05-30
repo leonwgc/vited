@@ -1,12 +1,13 @@
 {
   "name": "vited",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Cli Tools for vite dev for mpa/spa app",
   "bin": {
     "vited": "./bin/vited.js"
   },
   "scripts": {
     "build": "babel -x '.ts' src -d lib",
+    "dev": "yarn build -w",
     "pub": "bash pub.sh"
   },
   "tags": [
