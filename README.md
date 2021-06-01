@@ -7,6 +7,8 @@
 - 默认支持react和 react hmr
 - 支持 typescript
 - 支持spa/mpa 构建
+- 默认支持zarm和antd v4
+- 支持antd换肤
 
 ## 安装
 
@@ -24,7 +26,7 @@
     -index.jsx/tsx/ts/js
 ```
 
-vited start [-p port]
+vited start [-p port] [-t themeColor]
 
 ```js
 目录结构
@@ -32,7 +34,7 @@ vited start [-p port]
     --dir
       -index.jsx/tsx/ts/js
 ```
-vited start dir [-p port]
+vited start dir [-p port][-t themeColor]
 
 ##### 打包
 
@@ -40,7 +42,7 @@ vited start dir [-p port]
 vited build  -p https://www.xxx.com/ , 不设置publicPath, 则默认为 /
 ```
 
-vited build [-p publicPath]
+vited build [-p publicPath] [-t themeColor]
  
 #### vited包含安装的vite依赖
 

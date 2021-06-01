@@ -27,6 +27,7 @@ export const run = (
   publicPath = '/',
   isDev = true,
   port = 9000,
+  theme = '',
 ) => {
   let s = glob.sync(`./src/${dir}/index{.jsx,.js,.ts,.tsx}`);
 
@@ -48,10 +49,13 @@ export const run = (
     fs.writeFileSync(indexHtml, $.html());
   }
 
-  const modifyVars = {
-    '@primary-color': '#004bcc',
-    '@link-color': '#004bcc',
-  };
+  let lessOptions = {};
+
+  if (theme) {
+    lessOptions = {
+      modifyVars: { '@primary-color': theme, '@link-color': theme },
+    };
+  }
 
   /**
    * @type {import('vite').UserConfig}
@@ -62,7 +66,7 @@ export const run = (
         less: {
           relativeUrls: false,
           javascriptEnabled: true,
-          modifyVars,
+          ...lessOptions,
         },
         scss: {
           implementation: require('sass'),
