@@ -6,7 +6,6 @@ import chalk from 'chalk';
 import glob from 'glob';
 import { createServer, UserConfig, InlineConfig, build as runBuild, normalizePath } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
-// import styleImport from 'vite-plugin-style-import';
 import getTpl from './tpl';
 
 //#region  helper
@@ -34,17 +33,17 @@ const defaultConfig: InlineConfig = {
 };
 
 /** run vite with config */
-export const run = (isDev, options: UserConfig) => {
+export const run = (isDev: boolean, options: UserConfig, callback?: () => void) => {
   const entries = glob.sync(`./src/index{.jsx,.js,.ts,.tsx}`);
   if (!entries.length) {
-    exit(`No entry file found : ${getProjectPath('./src/index')}`);
+    exit(`入口文件不存在: ${getProjectPath('./src/index')}`);
   }
 
   const entry = entries[0];
   const indexHtml = getProjectPath('./index.html');
   if (!fs.existsSync(indexHtml)) {
     fs.writeFileSync(indexHtml, getTpl(entry));
-    console.log(chalk.green('index.html not exist, created one'));
+    console.log(chalk.green('index.html 已创建'));
   }
 
   const {
@@ -72,13 +71,14 @@ export const run = (isDev, options: UserConfig) => {
     config.plugins.unshift(reactRefresh());
     config.server = {
       port: 3000,
+      open: true,
       strictPort: true,
       ...server,
     };
     (async () => {
       const server = await createServer(config);
       await server.listen();
-      console.log(chalk.green('server is running at port ' + config.server.port));
+      console.log(chalk.green('服务器端口：' + config.server.port));
     })();
   } else {
     config.build = {
@@ -87,7 +87,9 @@ export const run = (isDev, options: UserConfig) => {
       ...build,
     };
     (async () => {
-      await runBuild(config);
+      await runBuild(config).then(() => {
+        callback?.();
+      });
     })();
   }
 };

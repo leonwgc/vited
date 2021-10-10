@@ -1,11 +1,10 @@
-基于 vite2.0 构建工具
+基于vite2.0的前端构建工具
 
 ### 特点
-
-- 无需编写 vite.config
-- 默认支持 react
-- 支持 typescript
-- 默认支持按需加载 zarm 和 antd v4 style
+- 无需配置 vite.config文件
+- react开发开箱即用
+- 默认支持 react & hmr & typescript, jsx,tsx可混写
+- 支持自定义配置（通过node api）
 
 ## 安装
 
@@ -16,7 +15,7 @@
 
 #### 开发
 
-vited start [-p port]
+vited start [-p port]  
 
 ##### 打包
 
@@ -24,10 +23,39 @@ vited build [-p publicPath]
 
 ##### 自定义配置
 
-使用默认导出的 node api
+使用导出的node api自定义开发构建
 
 ```js
-export declare const run: (isDev: any, options: UserConfig) => void;
+export declare const run: (isDev: boolean, options: UserConfig, callback?: () => void) => void;
+```
+
+```js
+const { run } = require('vited');
+
+run(
+  false,
+  {
+    server: {
+      host: '0.0.0.0',
+      port: 3001,
+    },
+  },
+  () => {
+    console.log('构建完成');
+  }
+);
+
+
+```
+
+### 注意
+less,sass没有默认安装，要使用，请在项目文件自行安装devDependencies
+e.g. 
+```js
+  "devDependencies": {
+    "less": "^4.1.2",
+    "sass": "^1.42.1",
+  }
 ```
 
 ### demo
