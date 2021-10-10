@@ -8,7 +8,6 @@ import { createServer, UserConfig, InlineConfig, build as runBuild, normalizePat
 import reactRefresh from '@vitejs/plugin-react-refresh';
 // import styleImport from 'vite-plugin-style-import';
 import getTpl from './tpl';
-import cheerio from 'cheerio';
 
 //#region  helper
 const getProjectPath = (dir = './') => {
@@ -46,11 +45,6 @@ export const run = (isDev, options: UserConfig) => {
   if (!fs.existsSync(indexHtml)) {
     fs.writeFileSync(indexHtml, getTpl(entry));
     console.log(chalk.green('index.html not exist, created one'));
-  } else {
-    const content = fs.readFileSync(indexHtml, { encoding: 'utf-8' });
-    let $ = cheerio.load(content);
-    $('script[type="module"]').attr('src', entry);
-    fs.writeFileSync(indexHtml, $.html());
   }
 
   const {
