@@ -15,7 +15,7 @@ program
     run(true, {
       base: '/',
       server: {
-        port: options.port,
+        port: Number(options.port),
       },
     });
   });

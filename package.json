@@ -1,6 +1,6 @@
 {
   "name": "vited",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "基于vite2.0构建工具",
   "bin": {
     "vited": "./bin/vited.js"

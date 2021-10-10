@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import glob from 'glob';
 import { createServer, UserConfig, InlineConfig, build as runBuild, normalizePath } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
-import styleImport from 'vite-plugin-style-import';
+// import styleImport from 'vite-plugin-style-import';
 import getTpl from './tpl';
 import cheerio from 'cheerio';
 
@@ -25,28 +25,7 @@ function exit(error) {
 const defaultConfig: InlineConfig = {
   configFile: false,
   envFile: false,
-  root: process.cwd(),
   base: '/', // publicPath
-  plugins: [
-    styleImport({
-      libs: [
-        {
-          libraryName: 'antd',
-          esModule: true,
-          resolveStyle: (name) => {
-            return `antd/es/${name}/style/index`;
-          },
-        },
-        {
-          libraryName: 'zarm',
-          esModule: true,
-          resolveStyle: (name) => {
-            return `zarm/es/${name}/style/css`;
-          },
-        },
-      ],
-    }),
-  ],
   resolve: {
     alias: {
       '~': getProjectPath('./src'),
@@ -74,38 +53,44 @@ export const run = (isDev, options: UserConfig) => {
     fs.writeFileSync(indexHtml, $.html());
   }
 
+  const {
+    plugins = [],
+    server = {},
+    build = {},
+    css = {
+      preprocessorOptions: {
+        less: {
+          relativeUrls: false,
+          javascriptEnabled: true,
+        },
+      },
+    },
+  } = options;
+
   const config: InlineConfig = {
     ...defaultConfig,
-    configFile: false,
-    envFile: false,
+    css,
   };
 
-  const { plugins = [], server = {}, build = {} } = options;
-
-  config.plugins = config.plugins.concat(plugins);
+  config.plugins = [...plugins];
 
   if (isDev) {
     config.plugins.unshift(reactRefresh());
     config.server = {
       port: 3000,
-      host: '0.0.0.0',
+      strictPort: true,
       ...server,
     };
+    (async () => {
+      const server = await createServer(config);
+      await server.listen();
+    })();
   } else {
     config.build = {
       emptyOutDir: true,
       assetsInlineLimit: 10240,
       ...build,
     };
-  }
-
-  if (isDev) {
-    const port = config.server.port || 3000;
-    (async () => {
-      const server = await createServer(config);
-      await server.listen(port);
-    })();
-  } else {
     (async () => {
       await runBuild(config);
     })();
