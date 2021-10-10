@@ -84,6 +84,7 @@ export const run = (isDev, options: UserConfig) => {
     (async () => {
       const server = await createServer(config);
       await server.listen();
+      console.log(chalk.green('server is running at port ' + config.server.port));
     })();
   } else {
     config.build = {
