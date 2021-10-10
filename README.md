@@ -22,6 +22,14 @@ vited start [-p port]
 
 vited build [-p publicPath]
 
+##### 自定义配置
+
+使用默认导出的 node api
+
+```js
+export declare const run: (isDev: any, options: UserConfig) => void;
+```
+
 ### demo
 
 参考 [https://github.com/leonwgc/vited-demo](https://github.com/leonwgc/vited-demo)
