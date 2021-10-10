@@ -1,14 +1,16 @@
 {
   "name": "vited",
-  "version": "2.1.5",
-  "description": "Cli Tools for vite dev for mpa/spa app",
+  "version": "2.1.6",
+  "description": "基于vite2.0构建工具",
   "bin": {
     "vited": "./bin/vited.js"
   },
+  "main": "./lib/vited.js",
+  "typings": "./types/vited.d.ts",
   "scripts": {
-    "build": "babel -x '.ts' src -d lib",
-    "dev": "yarn build -w",
-    "pub": "bash pub.sh"
+    "pub": "bash pub.sh",
+    "dev": "father-build -w",
+    "build": "father-build"
   },
   "tags": [
     "vited",
@@ -21,39 +23,43 @@
   "author": "leonwgc",
   "license": "MIT",
   "dependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.7",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/plugin-proposal-optional-chaining": "^7.14.2",
-    "@babel/plugin-transform-runtime": "^7.14.3",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/preset-react": "^7.8.3",
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.15.8",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
     "@babel/preset-stage-0": "^7.8.3",
-    "@babel/preset-typescript": "^7.13.0",
-    "@vitejs/plugin-react-refresh": "^1.3.3",
-    "chalk": "^2.4.2",
-    "cheerio": "^1.0.0-rc.9",
-    "commander": "^7.2.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
+    "@babel/runtime-corejs3": "^7.15.3",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.10",
+    "commander": "^8.2.0",
+    "core-js": "^3.18.2",
     "ejs": "^3.1.6",
-    "execa": "^5.0.0",
-    "glob": "^7.1.7",
-    "import-local": "^3.0.2",
-    "less": "^4.1.1",
-    "mkdirp": "^0.5.1",
-    "sass": "^1.34.0",
-    "vite": "^2.3.0",
-    "vite-plugin-style-import": "^0.10.0",
-    "yargs": "^17.0.1"
+    "execa": "^5.1.1",
+    "glob": "^7.2.0",
+    "import-local": "^3.0.3",
+    "mkdirp": "^1.0.4",
+    "vite": "^2.6.5",
+    "vite-plugin-style-import": "^1.2.1",
+    "yargs": "^17.2.1",
+    "less": "^3.13.0"
   },
   "devDependencies": {
-    "@types/node": "^15.6.1",
+    "@types/node": "^16.10.3",
+    "father-build": "^1.20.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.2.4"
+    "typescript": "^4.4.3"
   },
   "files": [
+    "lib",
     "bin",
-    "lib"
+    "types"
   ]
 }

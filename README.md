@@ -1,14 +1,11 @@
-### vited 
-
-基于vite2.0开发/打包工具
+基于 vite2.0 构建工具
 
 ### 特点
-- 无需编写vite.config
-- 默认支持react和 react hmr
+
+- 无需编写 vite.config
+- 默认支持 react
 - 支持 typescript
-- 支持spa/mpa 构建
-- 默认支持zarm和antd v4
-- 支持antd换肤
+- 默认支持按需加载 zarm 和 antd v4 style
 
 ## 安装
 
@@ -17,66 +14,14 @@
     $ npm install --save-dev vited
     $ yarn add -D vited
 
-
 #### 开发
-```js
- 
- 目录结构
- --src
-    -index.jsx/tsx/ts/js
-```
 
-vited start [-p port] [-t themeColor]
-
-```js
-目录结构
- --src
-    --dir
-      -index.jsx/tsx/ts/js
-```
-vited start dir [-p port][-t themeColor]
+vited start [-p port]
 
 ##### 打包
 
-```js
-vited build  -p https://www.xxx.com/ , 不设置publicPath, 则默认为 /
-```
+vited build [-p publicPath]
 
-vited build [-p publicPath] [-t themeColor]
- 
-#### vited包含安装的vite依赖
+### demo
 
-```js
-  "devDependencies": {
-    "@vitejs/plugin-react-refresh": "^1.3.2",
-    "vite": "^2.3.0",
-    "vite-plugin-style-import": "^0.10.0"
-  },
-```
-
-##### 默认 html 入口
-
-```js
-<!DOCTYPE html>
-<html lang="zh-cn">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
-    />
-    <meta name="format-detection" content="telephone=no, email=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-touch-fullscreen" content="yes" />
-    <title></title>
-  </head>
-  <body style="font-size: 14px">
-    <div id="root"></div>
-    <script type="module" src="./src/index.jsx"></script>
-  </body>
-</html>
-
-```
-
-### demo 
 参考 [https://github.com/leonwgc/vited-demo](https://github.com/leonwgc/vited-demo)
