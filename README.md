@@ -1,14 +1,10 @@
-### vited 
-
-基于vite2.0开发/打包工具
+基于vite2.0的前端构建工具
 
 ### 特点
-- 无需编写vite.config
-- 默认支持react和 react hmr
-- 支持 typescript
-- 支持spa/mpa 构建
-- 默认支持zarm和antd v4
-- 支持antd换肤
+- 无需配置 vite.config文件
+- react开发开箱即用
+- 默认支持 react & hmr & typescript, jsx,tsx可混写
+- 支持自定义配置（通过node api）
 
 ## 安装
 
@@ -17,66 +13,51 @@
     $ npm install --save-dev vited
     $ yarn add -D vited
 
-
 #### 开发
-```js
- 
- 目录结构
- --src
-    -index.jsx/tsx/ts/js
-```
 
-vited start [-p port] [-t themeColor]
-
-```js
-目录结构
- --src
-    --dir
-      -index.jsx/tsx/ts/js
-```
-vited start dir [-p port][-t themeColor]
+vited start [-p port]  
 
 ##### 打包
 
+vited build [-p publicPath]
+
+##### 自定义配置
+
+使用导出的node api自定义开发构建
+
 ```js
-vited build  -p https://www.xxx.com/ , 不设置publicPath, 则默认为 /
+export declare const run: (isDev: boolean, options: UserConfig, callback?: () => void) => void;
 ```
 
-vited build [-p publicPath] [-t themeColor]
- 
-#### vited包含安装的vite依赖
+```js
+const { run } = require('vited');
 
+run(
+  false,
+  {
+    server: {
+      host: '0.0.0.0',
+      port: 3001,
+    },
+  },
+  () => {
+    console.log('构建完成');
+  }
+);
+
+
+```
+
+### 注意
+less,sass没有默认安装，要使用，请在项目文件自行安装devDependencies
+e.g. 
 ```js
   "devDependencies": {
-    "@vitejs/plugin-react-refresh": "^1.3.2",
-    "vite": "^2.3.0",
-    "vite-plugin-style-import": "^0.10.0"
-  },
+    "less": "^4.1.2",
+    "sass": "^1.42.1",
+  }
 ```
 
-##### 默认 html 入口
+### demo
 
-```js
-<!DOCTYPE html>
-<html lang="zh-cn">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
-    />
-    <meta name="format-detection" content="telephone=no, email=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-touch-fullscreen" content="yes" />
-    <title></title>
-  </head>
-  <body style="font-size: 14px">
-    <div id="root"></div>
-    <script type="module" src="./src/index.jsx"></script>
-  </body>
-</html>
-
-```
-
-### demo 
 参考 [https://github.com/leonwgc/vited-demo](https://github.com/leonwgc/vited-demo)
