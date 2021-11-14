@@ -33,7 +33,7 @@ const defaultConfig: InlineConfig = {
   },
 };
 
-/** run/**
+/**
  * 自定义开发/编译配置
  *
  * @param {boolean} isDev 是否开发环境
