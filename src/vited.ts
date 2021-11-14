@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import glob from 'glob';
 import { createServer, UserConfig, InlineConfig, build as runBuild, normalizePath } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import address from 'address';
 import getTpl from './tpl';
 
 //#region  helper
@@ -68,6 +69,7 @@ export const run = (isDev: boolean, options: UserConfig, callback?: () => void) 
 
   const config: InlineConfig = {
     ...defaultConfig,
+    ...options,
     css,
   };
 
@@ -84,7 +86,15 @@ export const run = (isDev: boolean, options: UserConfig, callback?: () => void) 
     (async () => {
       const server = await createServer(config);
       await server.listen();
-      console.log(chalk.green('服务器端口：' + config.server.port));
+      const port = config.server.port;
+      const serveUrl = `http://localhost:${port}`;
+      const serverUrlIp = `http://${address.ip()}:${port}`;
+      console.log();
+      console.log(chalk.cyan('dev server running at:'));
+      console.log();
+      console.log('> Local:', chalk.green(`${serveUrl}`));
+      console.log();
+      console.log('> Network:', chalk.green(`${serverUrlIp}`));
     })();
   } else {
     config.build = {
@@ -92,6 +102,7 @@ export const run = (isDev: boolean, options: UserConfig, callback?: () => void) 
       assetsInlineLimit: 10240,
       ...build,
     };
+
     (async () => {
       await runBuild(config).then(() => {
         callback?.();
