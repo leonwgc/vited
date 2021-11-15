@@ -1,10 +1,11 @@
-基于vite2.0的前端构建工具
+vite2 cli 打包构建
 
 ### 特点
-- 无需配置 vite.config文件
-- react开发开箱即用
-- 默认支持 react & hmr & typescript, jsx,tsx可混写
-- 支持自定义配置（通过node api）
+
+- 无需配置 vite.config 文件
+- react 开发开箱即用
+- 默认支持 react & hmr & typescript, jsx,tsx 可混写
+- 支持自定义配置（通过 node api）
 
 ## 安装
 
@@ -15,7 +16,7 @@
 
 #### 开发
 
-vited start [-p port]  
+vited start [-p port]
 
 ##### 打包
 
@@ -23,7 +24,7 @@ vited build [-p publicPath]
 
 ##### 自定义配置
 
-使用导出的node api自定义开发构建
+使用导出的 node api 自定义开发构建
 
 ```js
 /**
@@ -43,7 +44,6 @@ run(
   false,
   {
     server: {
-      host: '0.0.0.0',
       port: 3001,
     },
   },
@@ -51,13 +51,13 @@ run(
     console.log('构建完成');
   }
 );
-
-
 ```
 
 ### 注意
-less,sass没有默认安装，要使用，请在项目文件自行安装devDependencies
-e.g. 
+
+less,sass 没有默认安装，要使用，请在项目文件自行安装 devDependencies
+e.g.
+
 ```js
   "devDependencies": {
     "less": "^4.1.2",

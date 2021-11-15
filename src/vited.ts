@@ -79,6 +79,7 @@ export const run = (isDev: boolean, options: UserConfig, callback?: () => void) 
     config.plugins.unshift(reactRefresh());
     config.server = {
       port: 3000,
+      host: '0.0.0.0',
       open: true,
       strictPort: true,
       ...server,
